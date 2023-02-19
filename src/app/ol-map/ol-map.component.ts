@@ -31,7 +31,7 @@ import { EduGamingControl } from '../controls/edu-gaming-control';
 @Component({
   selector: 'app-ol-map',
   templateUrl: './ol-map.component.html',
-  styleUrls: ['./ol-map.component.scss'],
+  styleUrls: ['./ol-map.component.css'],
 })
 export class OlMapComponent implements AfterViewInit {
   @Input() center: Coordinate | any; // map center
