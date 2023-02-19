@@ -1,42 +1,24 @@
 <div class="container mat-elevation-z8">
-  <mat-table #table [dataSource]="data">
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <div *ngIf="element.isSelected; else notSelected">
-          <button
-            class="btnName"
-            matTooltip="Press button"
-            matTooltipPosition="right"
-            [style.backgroundColor]="selectedColor"
-            (pointerdown)="onClick(element)"
-          >
-            {{ element.name }}
-          </button>
-        </div>
-        <ng-template #notSelected>
-          <div>
-            <button
-              class="btnName"
-              matTooltip="Press button"
-              matTooltipPosition="right"
-              [style.backgroundColor]="notSelectedColor"
-              (pointerdown)="onClick(element)"
-            >
-              {{ element.name }}
-            </button>
-          </div>
-        </ng-template>
-      </mat-cell>
-    </ng-container>
-    <mat-header-row
-      *matHeaderRowDef="displayedColumns"
-      [style.borderWidth.px]="border"
-    ></mat-header-row>
-    <mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      [style.borderWidth.px]="border"
-    ></mat-row>
-  </mat-table>
+  <div #table *ngFor="let element of dataSource">
+    <div *ngIf="element.isSelected; else notSelected">
+      <button
+        class="btnName"
+        [style.backgroundColor]="selectedColor"
+        (pointerdown)="onClick(element)"
+      >
+        {{ element.name }}
+      </button>
+    </div>
+    <ng-template #notSelected>
+      <div>
+        <button
+          class="btnName"
+          [style.backgroundColor]="notSelectedColor"
+          (pointerdown)="onClick(element)"
+        >
+          {{ element.name }}
+        </button>
+      </div>
+    </ng-template>
+  </div>
 </div>

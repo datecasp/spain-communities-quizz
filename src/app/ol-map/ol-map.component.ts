@@ -26,12 +26,12 @@ import Static from 'ol/source/ImageStatic';
 import { Pixel } from 'ol/pixel';
 import { EduGamingControl } from '../controls/edu-gaming-control';
 
-useGeographic();
+//useGeographic();
 
 @Component({
   selector: 'app-ol-map',
-  templateUrl: './ol-map-component.component.html',
-  styleUrls: ['./ol-map-component.component.scss'],
+  templateUrl: './ol-map.component.html',
+  styleUrls: ['./ol-map.component.scss'],
 })
 export class OlMapComponent implements AfterViewInit {
   @Input() center: Coordinate | any; // map center
@@ -85,7 +85,6 @@ export class OlMapComponent implements AfterViewInit {
     //this.projection = GetProjection('EPSG:3857');
     //this.projection.setExtent(this.extent);
     this.view = new View({
-      //center: this.center,
       center: getCenter(this.extent),
       zoom: this.zoom,
       projection: this.projection,
@@ -98,7 +97,7 @@ export class OlMapComponent implements AfterViewInit {
       layers: [
         new ImageLayer({
           source: new Static({
-            url: 'https://imgs.xkcd.com/comics/online_communities.png',
+            url: './assets/spain-communities.png',
             projection: this.projection,
             imageExtent: this.extent,
           }),

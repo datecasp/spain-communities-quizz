@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OlMapComponent } from './ol-map-component.component';
+import { OlMapComponent } from './ol-map.component';
 
 describe('OlMapComponent', () => {
   let component: OlMapComponent;
