@@ -9,7 +9,7 @@ import { ELEMENT_DATA } from './data/element-data';
 })
 export class AppComponent {
   title = 'spain-communities-quizz'; //Inputs app-ol-map and in-line style defs
-  center: Coordinate = [400, 350];
+  center: Coordinate = [200, 350];
   zoom: number = 1.2;
   points: Coordinate[] = [
     [0, 0],
@@ -17,7 +17,7 @@ export class AppComponent {
     [800, 700],
     [800, 700],
   ];
-  mapStyle = 'width: 800px; height: 700px;';
+  mapStyle = 'width: 1200px; height: 700px;';
 
   //Inputs table-custom and in-line style defs
   dataA = ELEMENT_DATA.slice(0, ELEMENT_DATA.length / 2 + 1);

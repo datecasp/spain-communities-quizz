@@ -13,7 +13,7 @@ import { OlMapComponent } from './ol-map/ol-map.component';
   declarations: [
     AppComponent,
     TableCustomComponent,
-    OlMapComponent
+    OlMapComponent,
   ],
   imports: [
     BrowserAnimationsModule,

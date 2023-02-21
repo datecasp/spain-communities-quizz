@@ -8,5 +8,7 @@
   (click)="onClick($event)"
   (pointermove)="onPointerMove($event)"
 >
-  <div id="popup"></div>
+<table-custom [data]="dataSourceLeft" [style]="columnStyleLeft"></table-custom>
+<table-custom [data]="dataSourceRight" [style]="columnStyleRight"></table-custom>
+<div id="popup"></div>
 </div>

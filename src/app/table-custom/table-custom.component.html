@@ -1,4 +1,4 @@
-<div class="container mat-elevation-z8">
+<div class="container mat-elevation-z8" [style]="columnStyle">
   <div #table *ngFor="let element of dataSource">
     <div *ngIf="element.isSelected; else notSelected">
       <button

@@ -1,21 +1,28 @@
+import { MatButton } from '@angular/material/button';
 import { Control } from 'ol/control';
 
 export class EduGamingControl extends Control {
-  imgMenuIcon: string = './assets/rubik.png';
-  imgMenuIconHover: string = './assets/rubik-hover.png';
+  imgMenuIcon: string = '././src/assets/rubik.png';
+  imgMenuIconHover: string = '././assets/rubik-hover.png';
   imgSrc: string = this.imgMenuIcon;
 
   /**
    * @param {Object} [opt_options] Control options.
    */
-  constructor(opt_options) {
+  constructor(opt_options : any) {
     const options = opt_options || {};
     const button = document.createElement('button');
-    button.innerHTML =
-      '<img [src]="imgSrc" width="60dp" (mouseover)="imgSrc = this.imgMenuIconHover" (mouseout)="imgSrc = this.imgMenuIcon"/>';
+    const img = document.createElement('img');
+    img.src ='././assets/rubik.png';
+    img.height = 64;
+    img.addEventListener("mouseover", function() { img.src = '././assets/rubik-hover.png'; img.className='container mat-elevation-z12'; });
+    img.addEventListener("mouseout", function() { img.src = '././assets/rubik.png'; img.className='container mat-elevation-z8'; });
+    img.className = "container mat-elevation-z8";
+
+    button.appendChild(img);
 
     const element = document.createElement('div');
-    element.className = 'rotate-north ol-unselectable ol-control';
+    element.className = 'EduGamingControl';
     element.appendChild(button);
 
     super({
@@ -23,11 +30,10 @@ export class EduGamingControl extends Control {
       target: options.target,
     });
 
-    button.addEventListener('click', this.handleRotateNorth.bind(this), false);
+    button.addEventListener('click', this.handleButtonEduGamingClick.bind(this));
   }
 
-  handleRotateNorth() {
-    //this.getMap().getView().setRotation(0);
-    console.log('HOME clicked');
+  handleButtonEduGamingClick(event: any) {
+    console.log(event);
   }
 }

@@ -14,6 +14,7 @@ import { IElement } from '../interfaces/IElement';
 })
 export class TableCustomComponent {
   @Input() data: IElement[] = [];
+  @Input() columnStyle: string = '';
   dataSource: IElement[] = [];
   displayedColumns = ['name'];
   notSelectedColor = 'aquamarine';
@@ -21,15 +22,15 @@ export class TableCustomComponent {
   border: number = 0;
 
   ngAfterViewInit() {
-    console.log(this.data[0].name);
+    console.log(this.data[5].name);
     this.dataSource = this.data;
   }
 
   onClick(element: IElement) {
-  //  To equals id and dataSource index if dataSource[0].id != 0
+    //  To equals id and dataSource index if dataSource[0].id != 0
     //  dataA[0].id == 1   dataB[0] == 10 in spain-aacc-quizz
     let offsetId = this.dataSource[0].id;
-    this.dataSource[element.id-offsetId].isSelected = !element.isSelected;
+    this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
   }
 }
 

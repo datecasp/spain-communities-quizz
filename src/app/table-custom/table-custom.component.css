@@ -2,7 +2,6 @@
   width: inherit;
   display: flex;
   flex-direction: column;
-  min-width: 250px;
 }
 
 .mat-table {
@@ -18,7 +17,7 @@
 }
 
 .btnName {
-  width: 15%;
+  width: 20%;
   min-width: 150px;
   height: 2.5em;
   font-size: larger;

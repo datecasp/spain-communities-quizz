@@ -7,26 +7,27 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-import { View, Feature, Map } from 'ol';
+//import { View, Feature, Map } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import VectorLayer from 'ol/layer/Vector';
 import Projection from 'ol/proj/Projection';
-import { Extent, getCenter } from 'ol/extent';
-import TileLayer from 'ol/layer/Tile';
-import OSM, { ATTRIBUTION } from 'ol/source/OSM';
+import { getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
-import { toLonLat, useGeographic } from 'ol/proj.js';
-//import proj4 = require('proj4');
-import { register } from 'ol/proj/proj4';
-import { get as GetProjection } from 'ol/proj';
-import { ScaleLine, defaults as DefaultControls } from 'ol/control';
-import { Point, Polygon } from 'ol/geom';
+import { defaults as DefaultControls } from 'ol/control';
+import { Point } from 'ol/geom';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import { Pixel } from 'ol/pixel';
 import { EduGamingControl } from '../controls/edu-gaming-control';
+import Feature from 'ol/Feature';
+import View from 'ol/View';
+import Map from 'ol/Map';
+import { useGeographic } from 'ol/proj';
+import { ELEMENT_DATA } from '../data/element-data';
+import { IElement } from '../interfaces/IElement';
 
-//useGeographic();
+
+useGeographic();
 
 @Component({
   selector: 'app-ol-map',
@@ -44,12 +45,19 @@ export class OlMapComponent implements AfterViewInit {
   //projection: Projection | any;
   //extent: Extent = [-20026376.39, -20048966.1, 20026376.39, 20048966.1];
   map: Map | any;
+
+  //Data and defs for column buttons
+  data = ELEMENT_DATA;
+  dataSourceLeft: IElement[]  = ELEMENT_DATA.slice(0, ELEMENT_DATA.length / 2 + 1);
+  dataSourceRight: IElement[] = ELEMENT_DATA.slice(ELEMENT_DATA.length / 2 + 1);
+  columnStyleLeft = 'position: absolute; left:220px; top:150px; zIndex: 10;';
+  columnStyleRight = 'position: absolute; right:120px; top:150px; zIndex: 10;';
   @Output() mapReady = new EventEmitter<Map>();
 
   // Map views always need a projection.  Here we just want to map image
   // coordinates directly to map coordinates, so we create a projection that uses
   // the image extent in pixels.
-  readonly extent = [0, 0, 1024, 968];
+  readonly extent = [0, 0, 800, 700];
   readonly projection = new Projection({
     code: 'xkcd-image',
     units: 'pixels',
@@ -63,9 +71,8 @@ export class OlMapComponent implements AfterViewInit {
     this.mapPoint = new Point(this.points[0]);
 
     this.feat = new Feature({
-      point: new Point(this.mapCoord),
-      name: 'My Polygon',
-      id: 1,
+      //point: new Point(this.mapCoord),
+      point: new Point(this.points[1])
     });
 
     this.feat.setId('1');
@@ -85,7 +92,7 @@ export class OlMapComponent implements AfterViewInit {
     //this.projection = GetProjection('EPSG:3857');
     //this.projection.setExtent(this.extent);
     this.view = new View({
-      center: getCenter(this.extent),
+      center: this.center,
       zoom: this.zoom,
       projection: this.projection,
     });
@@ -97,17 +104,17 @@ export class OlMapComponent implements AfterViewInit {
       layers: [
         new ImageLayer({
           source: new Static({
-            url: './assets/spain-communities.png',
+            url: './assets/spain-aacc.png',
             projection: this.projection,
             imageExtent: this.extent,
           }),
         }),
         new VectorLayer({
           source: new VectorSource({
-            features: [this.feat],
+            features: [new Feature(this.feat)],
           }),
           style: {
-            'circle-radius': 9,
+            'circle-radius': 16,
             'circle-fill-color': 'red',
           },
         }),
