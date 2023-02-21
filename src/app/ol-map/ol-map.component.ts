@@ -26,7 +26,6 @@ import { useGeographic } from 'ol/proj';
 import { ELEMENT_DATA } from '../data/element-data';
 import { IElement } from '../interfaces/IElement';
 
-
 useGeographic();
 
 @Component({
@@ -37,7 +36,7 @@ useGeographic();
 export class OlMapComponent implements AfterViewInit {
   @Input() center: Coordinate | any; // map center
   @Input() zoom: number | any; // initial zoom
-  @Input() points: Coordinate[] | any; // Point
+  points: Coordinate[] | any; // Point
   mapPoint: Point | any;
   mapCoord: Coordinate | any;
   feat: Feature | any;
@@ -48,7 +47,10 @@ export class OlMapComponent implements AfterViewInit {
 
   //Data and defs for column buttons
   data = ELEMENT_DATA;
-  dataSourceLeft: IElement[]  = ELEMENT_DATA.slice(0, ELEMENT_DATA.length / 2 + 1);
+  dataSourceLeft: IElement[] = ELEMENT_DATA.slice(
+    0,
+    ELEMENT_DATA.length / 2 + 1
+  );
   dataSourceRight: IElement[] = ELEMENT_DATA.slice(ELEMENT_DATA.length / 2 + 1);
   columnStyleLeft = 'position: absolute; left:220px; top:150px; zIndex: 10;';
   columnStyleRight = 'position: absolute; right:120px; top:150px; zIndex: 10;';
@@ -64,15 +66,26 @@ export class OlMapComponent implements AfterViewInit {
     extent: this.extent,
   });
 
+  randomPointId: number = -1;
+
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
-    this.mapCoord = this.points[1];
-    this.mapPoint = new Point(this.points[0]);
+    this.points = this.getPointsList(this.data);
 
+    this.mapCoord = this.points[1];
+
+    this.randomPointId = Math.floor(Math.random() * 17);
+    // Para random
+    //Descomentar cuando estén todos los puntos
+    //this.mapPoint = new Point(this.points[this.randomPointId]);
+    //Para buscar los puntos de las AACCs
+    this.mapPoint = new Point(this.points[7]);
+
+    //No funca
     this.feat = new Feature({
       //point: new Point(this.mapCoord),
-      point: new Point(this.points[1])
+      point: new Point(this.points[1]),
     });
 
     this.feat.setId('1');
@@ -81,6 +94,14 @@ export class OlMapComponent implements AfterViewInit {
       this.zone.runOutsideAngular(() => this.initMap());
     }
     setTimeout(() => this.mapReady.emit(this.map));
+  }
+
+  private getPointsList(data: IElement[]): Coordinate[] {
+    let result: Coordinate[] = [];
+    for (let i = 0; i < data.length; i++) {
+      result.push(data[i].point);
+    }
+    return result;
   }
 
   private initMap(): void {
@@ -108,15 +129,6 @@ export class OlMapComponent implements AfterViewInit {
             projection: this.projection,
             imageExtent: this.extent,
           }),
-        }),
-        new VectorLayer({
-          source: new VectorSource({
-            features: [new Feature(this.feat)],
-          }),
-          style: {
-            'circle-radius': 16,
-            'circle-fill-color': 'red',
-          },
         }),
         new VectorLayer({
           source: new VectorSource({

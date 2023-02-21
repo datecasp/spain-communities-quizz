@@ -11,12 +11,6 @@ export class AppComponent {
   title = 'spain-communities-quizz'; //Inputs app-ol-map and in-line style defs
   center: Coordinate = [200, 350];
   zoom: number = 1.2;
-  points: Coordinate[] = [
-    [0, 0],
-    [400, 350],
-    [800, 700],
-    [800, 700],
-  ];
   mapStyle = 'width: 1200px; height: 700px;';
 
   //Inputs table-custom and in-line style defs
