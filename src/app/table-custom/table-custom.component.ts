@@ -40,6 +40,11 @@ export class TableCustomComponent {
     );
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
   }
+
+  onLeave(element: IElement){
+    let offsetId = this.dataSource[0].id;
+    this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
+  }
 }
 
 /**  Copyright 2018 Google Inc. All Rights Reserved.

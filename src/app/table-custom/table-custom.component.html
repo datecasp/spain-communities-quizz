@@ -1,19 +1,20 @@
 <div class="container mat-elevation-z8" [style]="columnStyle">
-  <div #table *ngFor="let element of dataSource">
+  <div #table *ngFor="let element of dataSource; index as i">
     <div *ngIf="element.isSelected; else notSelected">
-      <div *ngIf="correctAnswer; else wrongClick">
+      <div *ngIf="!correctAnswer; else rightClick">
         <button
           class="btnName"
-          [style.backgroundColor]="correctColor"
+          [style.backgroundColor]="wrongColor"
           (pointerdown)="onClick(element)"
+          (pointerleave)="onLeave(element)"
         >
           {{ element.name }}
         </button>
       </div>
-      <ng-template #wrongClick>
+      <ng-template #rightClick>
         <button
           class="btnName"
-          [style.backgroundColor]="wrongColor"
+          [style.backgroundColor]="correctColor"
           (pointerdown)="onClick(element)"
         >
           {{ element.name }}
