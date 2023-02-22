@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { IElement } from '../interfaces/IElement';
+import { OlMapService } from '../services/ol-map.service';
 
 /**
  *  TODO:
@@ -17,9 +18,13 @@ export class TableCustomComponent {
   @Input() columnStyle: string = '';
   dataSource: IElement[] = [];
   displayedColumns = ['name'];
+  correctAnswer: boolean = false;
   notSelectedColor = 'aquamarine';
-  selectedColor = 'blue';
+  correctColor = 'green';
+  wrongColor = 'red';
   border: number = 0;
+
+  constructor(private _olMapService: OlMapService) {}
 
   ngAfterViewInit() {
     console.log(this.data[5].name);
@@ -30,6 +35,9 @@ export class TableCustomComponent {
     //  To equals id and dataSource index if dataSource[0].id != 0
     //  dataA[0].id == 1   dataB[0] == 10 in spain-aacc-quizz
     let offsetId = this.dataSource[0].id;
+    this.correctAnswer = this._olMapService.checkClickedAaccService(
+      element.point
+    );
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
   }
 }
