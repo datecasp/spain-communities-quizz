@@ -23,9 +23,8 @@ import Feature from 'ol/Feature';
 import View from 'ol/View';
 import Map from 'ol/Map';
 import { useGeographic } from 'ol/proj';
-import { ELEMENT_DATA } from '../data/element-data';
 import { IElement } from '../interfaces/IElement';
-
+import { OlMapService } from '../services/ol-map.service';
 useGeographic();
 
 @Component({
@@ -44,12 +43,12 @@ export class OlMapComponent implements AfterViewInit {
   map: Map | any;
 
   //Data and defs for column buttons
-  data = ELEMENT_DATA;
-  dataSourceLeft: IElement[] = ELEMENT_DATA.slice(
+  data = this._olMapService.getDataService();
+  dataSourceLeft: IElement[] = this.data.slice(
     0,
-    ELEMENT_DATA.length / 2 + 1
+    this.data.length / 2 + 1
   );
-  dataSourceRight: IElement[] = ELEMENT_DATA.slice(ELEMENT_DATA.length / 2 + 1);
+  dataSourceRight: IElement[] = this.data.slice(this.data.length / 2 + 1);
   columnStyleLeft = 'position: absolute; left:220px; top:150px; zIndex: 10;';
   columnStyleRight = 'position: absolute; right:120px; top:150px; zIndex: 10;';
   @Output() mapReady = new EventEmitter<Map>();
@@ -64,27 +63,19 @@ export class OlMapComponent implements AfterViewInit {
     extent: this.extent,
   });
 
+  //Instance of the AACC showed in quizz
+  showedData: IElement = this._olMapService.getRandomShowedAaccService();
   randomPointId: number = -1;
 
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef, private _olMapService: OlMapService) {}
 
   ngAfterViewInit(): void {
-    this.points = this.getPointsList(this.data);
-    this.randomPointId = Math.floor(Math.random() * 17);
-    this.mapPoint = new Point(this.points[this.randomPointId]);
+    this.mapPoint = new Point(this.showedData.point);
    
     if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap());
     }
     setTimeout(() => this.mapReady.emit(this.map));
-  }
-
-  private getPointsList(data: IElement[]): Coordinate[] {
-    let result: Coordinate[] = [];
-    for (let i = 0; i < data.length; i++) {
-      result.push(data[i].point);
-    }
-    return result;
   }
 
   private initMap(): void {

@@ -15,8 +15,8 @@ export class EduGamingControl extends Control {
     const img = document.createElement('img');
     img.src ='././assets/rubik.png';
     img.height = 64;
-    img.addEventListener("mouseover", function() { img.src = '././assets/rubik-hover.png'; img.className='container mat-elevation-z12'; });
-    img.addEventListener("mouseout", function() { img.src = '././assets/rubik.png'; img.className='container mat-elevation-z8'; });
+    img.addEventListener("mouseover", function() { img.src = '././assets/rubik-hover.png'; img.className='container mat-elevation-z12'; img.height = 80;});
+    img.addEventListener("mouseout", function() { img.src = '././assets/rubik.png'; img.className='container mat-elevation-z8'; img.height = 64});
     img.className = "container mat-elevation-z8";
 
     button.appendChild(img);
