@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { IAacc } from '../interfaces/IAacc';
+import { FinalDialogService } from '../services/final-dialog.service';
 import { OlMapService } from '../services/ol-map.service';
 
 /**
@@ -24,7 +25,7 @@ export class TableCustomComponent {
   wrongColor = 'red';
   border: number = 0;
 
-  constructor(private _olMapService: OlMapService) {}
+  constructor(private _olMapService: OlMapService, private _finalDialogService: FinalDialogService) {}
 
   ngAfterViewInit() {
     console.log(this.data[5].name);
@@ -39,6 +40,10 @@ export class TableCustomComponent {
       element.point
     );
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
+    if(element.isCorrect){
+      this._finalDialogService.confirm(element.isCorrect, 'Yeah Right!!! Nice answer!',
+      'That´s the correct ', "answer");
+    }
   }
 
   onLeave(element: IAacc) {
