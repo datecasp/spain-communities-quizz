@@ -1,4 +1,3 @@
-import { MatButton } from '@angular/material/button';
 import { Control } from 'ol/control';
 
 export class EduGamingControl extends Control {

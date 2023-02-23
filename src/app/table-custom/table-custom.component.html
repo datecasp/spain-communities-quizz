@@ -1,7 +1,7 @@
 <div class="container mat-elevation-z8" [style]="columnStyle">
-  <div #table *ngFor="let element of dataSource; index as i">
+  <div #table *ngFor="let element of dataSource">
     <div *ngIf="element.isSelected; else notSelected">
-      <div *ngIf="!correctAnswer; else rightClick">
+      <div *ngIf="!element.isCorrect; else rightClick">
         <button
           class="btnName"
           [style.backgroundColor]="wrongColor"

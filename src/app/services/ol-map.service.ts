@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Coordinate } from 'ol/coordinate';
 import { Pixel } from 'ol/pixel';
 import { ELEMENT_DATA } from '../data/element-data';
-import { IElement } from '../interfaces/IElement';
+import { IAacc } from '../interfaces/IAacc';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OlMapService {
   data = ELEMENT_DATA;
-  showedData: IElement | any;
+  showedData: IAacc | any;
 
   constructor() {}
 
-  public getDataService(): IElement[] {
+  public getDataService(): IAacc[] {
     return this.data;
   }
 
-  public getRandomShowedAaccService(): IElement {
+  public getRandomShowedAaccService(): IAacc {
     this.showedData = this.data[Math.floor(Math.random() * 17)];
     return this.showedData;
   }

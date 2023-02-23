@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { IElement } from '../interfaces/IElement';
+import { IAacc } from '../interfaces/IAacc';
 import { OlMapService } from '../services/ol-map.service';
 
 /**
@@ -14,9 +14,9 @@ import { OlMapService } from '../services/ol-map.service';
   templateUrl: './table-custom.component.html',
 })
 export class TableCustomComponent {
-  @Input() data: IElement[] = [];
+  @Input() data: IAacc[] = [];
   @Input() columnStyle: string = '';
-  dataSource: IElement[] = [];
+  dataSource: IAacc[] = [];
   displayedColumns = ['name'];
   correctAnswer: boolean = false;
   notSelectedColor = 'aquamarine';
@@ -31,22 +31,20 @@ export class TableCustomComponent {
     this.dataSource = this.data;
   }
 
-  onClick(element: IElement) {
+  onClick(element: IAacc) {
     //  To equals id and dataSource index if dataSource[0].id != 0
     //  dataA[0].id == 1   dataB[0] == 10 in spain-aacc-quizz
     let offsetId = this.dataSource[0].id;
-    this.correctAnswer = this._olMapService.checkClickedAaccService(
+    element.isCorrect = this._olMapService.checkClickedAaccService(
       element.point
     );
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
   }
 
-  onLeave(element: IElement){
+  onLeave(element: IAacc) {
     let offsetId = this.dataSource[0].id;
-    this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
+    if (!this.dataSource[element.id - offsetId].isCorrect){
+      this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
+    }
   }
 }
-
-/**  Copyright 2018 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */

@@ -7,11 +7,9 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-//import { View, Feature, Map } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import VectorLayer from 'ol/layer/Vector';
 import Projection from 'ol/proj/Projection';
-import { getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
 import { defaults as DefaultControls } from 'ol/control';
 import { Point } from 'ol/geom';
@@ -23,8 +21,8 @@ import Feature from 'ol/Feature';
 import View from 'ol/View';
 import Map from 'ol/Map';
 import { useGeographic } from 'ol/proj';
-import { IElement } from '../interfaces/IElement';
 import { OlMapService } from '../services/ol-map.service';
+import { IAacc } from '../interfaces/IAacc';
 useGeographic();
 
 @Component({
@@ -44,11 +42,11 @@ export class OlMapComponent implements AfterViewInit {
 
   //Data and defs for column buttons
   data = this._olMapService.getDataService();
-  dataSourceLeft: IElement[] = this.data.slice(
+  dataSourceLeft: IAacc[] = this.data.slice(
     0,
     this.data.length / 2 + 1
   );
-  dataSourceRight: IElement[] = this.data.slice(this.data.length / 2 + 1);
+  dataSourceRight: IAacc[] = this.data.slice(this.data.length / 2 + 1);
   columnStyleLeft = 'position: absolute; left:220px; top:150px; zIndex: 10;';
   columnStyleRight = 'position: absolute; right:120px; top:150px; zIndex: 10;';
   @Output() mapReady = new EventEmitter<Map>();
@@ -64,7 +62,7 @@ export class OlMapComponent implements AfterViewInit {
   });
 
   //Instance of the AACC showed in quizz
-  showedData: IElement = this._olMapService.getRandomShowedAaccService();
+  showedData: IAacc = this._olMapService.getRandomShowedAaccService();
   randomPointId: number = -1;
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef, private _olMapService: OlMapService) {}
