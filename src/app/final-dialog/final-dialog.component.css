@@ -1,21 +1,26 @@
+.header {
+  background-color: #2cff56;
+}
+
 .word {
-    text-align: center;
-    text-justify: auto;
-    font-family: 'Ink Free';
-    font-size: 45px;
-    font-weight: bolder;
-  }
-  
-  .title {
-    text-align: center;
-    text-justify: auto;
-    font-family: 'Ink Free';
-    font-size: 55px;
-  }
-  
-  .simpleText {
-    text-align: center;
-    text-justify: auto;
-    font-size: 25px;
-    font-family: 'Ink Free';
-  }
+  text-align: center;
+  text-justify: auto;
+  font-family: "Ink Free";
+  font-size: 45px;
+  font-weight: bolder;
+}
+
+.title {
+  text-align: center;
+  text-justify: auto;
+  font-family: "Ink Free";
+  font-size: 55px;
+}
+
+.simpleText {
+    padding: 25px;
+  text-align: center;
+  text-justify: auto;
+  font-size: 25px;
+  font-family: "Ink Free";
+}

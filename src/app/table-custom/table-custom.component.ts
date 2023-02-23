@@ -40,7 +40,7 @@ export class TableCustomComponent {
       element.point
     );
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
-    if(element.isCorrect){
+    if(element.isCorrect && element.isSelected){
       this._finalDialogService.confirm(element.isCorrect, 'Yeah Right!!! Nice answer!',
       'That´s the correct ', "answer");
     }
