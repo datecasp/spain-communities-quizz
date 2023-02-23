@@ -24,8 +24,12 @@ export class TableCustomComponent {
   correctColor = 'green';
   wrongColor = 'red';
   border: number = 0;
+  tries = 1; //Number of tries used -> starts at first try
 
-  constructor(private _olMapService: OlMapService, private _finalDialogService: FinalDialogService) {}
+  constructor(
+    private _olMapService: OlMapService,
+    private _finalDialogService: FinalDialogService
+  ) {}
 
   ngAfterViewInit() {
     console.log(this.data[5].name);
@@ -39,16 +43,24 @@ export class TableCustomComponent {
     element.isCorrect = this._olMapService.checkClickedAaccService(
       element.point
     );
+    if (!element.isCorrect) {
+      this.tries++;
+    }
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
-    if(element.isCorrect && element.isSelected){
-      this._finalDialogService.confirm(element.isCorrect, 'Yeah Right!!! Nice answer!',
-      'That´s the correct ', "answer");
+    if (element.isCorrect && element.isSelected) {
+      this._finalDialogService.confirm(
+        'Yeah Right!!! Nice answer!',
+        'That´s the correct Community',
+        'Number of tries:  ',
+        this.tries
+      );
+      
     }
   }
 
   onLeave(element: IAacc) {
     let offsetId = this.dataSource[0].id;
-    if (!this.dataSource[element.id - offsetId].isCorrect){
+    if (!this.dataSource[element.id - offsetId].isCorrect) {
       this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
     }
   }

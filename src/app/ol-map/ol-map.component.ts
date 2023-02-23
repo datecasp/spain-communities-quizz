@@ -109,19 +109,21 @@ export class OlMapComponent implements AfterViewInit {
   }
 
   onClick($event: any) {
-    let pixel: Pixel = [$event.x, $event.y];
-    const feature = this.map.getFeaturesAtPixel(pixel)[0] as Feature;
-    if (!feature) {
-      return;
-    }
-    console.log(feature.getId());
-    const coordinate = feature.getGeometry() as Point;
-    console.log(coordinate.getCoordinates(), feature);
+    // Not needed for this game
+    // let pixel: Pixel = [$event.x, $event.y];
+    // const feature = this.map.getFeaturesAtPixel(pixel)[0] as Feature;
+    // if (!feature) {
+    //   return;
+    // }
+    // console.log(feature.getId());
+    // const coordinate = feature.getGeometry() as Point;
+    // console.log(coordinate.getCoordinates(), feature);
   }
 
   onPointerMove($event: any) {
-    let pixel: Coordinate = [$event.x, $event.y];
-    const type = this.map.hasFeatureAtPixel(pixel) ? 'pointer' : 'inherit';
-    this.map.getViewport().style.cursor = type;
+    //Not needed fot this game 
+    // let pixel: Coordinate = [$event.x, $event.y];
+    // const type = this.map.hasFeatureAtPixel(pixel) ? 'pointer' : 'inherit';
+    // this.map.getViewport().style.cursor = type;
   }
 }

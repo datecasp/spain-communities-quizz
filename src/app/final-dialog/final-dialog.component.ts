@@ -7,10 +7,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./final-dialog.component.css']
 })
 export class FinalDialogComponent {
-  @Input() success: boolean = false;
   @Input() title: string = "";
   @Input() message: string = "";
-  @Input() word: string = "";
+  @Input() triesTxt: string = "";
+  @Input() triesNum: number = 0;
   @Input() btnOkText: string = "";
 
   constructor(private activeModal: NgbActiveModal) { }
