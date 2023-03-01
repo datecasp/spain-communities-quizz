@@ -24,6 +24,7 @@ import { useGeographic } from 'ol/proj';
 import { OlMapService } from '../services/ol-map.service';
 import { IAacc } from '../interfaces/IAacc';
 import { InlineStyles } from '../Resources/inline-styles';
+import Vector from 'ol/source/Vector';
 useGeographic();
 
 @Component({
@@ -40,7 +41,7 @@ export class OlMapComponent implements AfterViewInit {
   feat: Feature | any;
   view: View | any;
   map: Map | any;
-  inlineStyleStore: InlineStyles = new InlineStyles;
+  inlineStyleStore: InlineStyles = new InlineStyles();
   playAgain = false;
   //Data and defs for column buttons
   data = this._olMapService.getDataService();
@@ -51,6 +52,7 @@ export class OlMapComponent implements AfterViewInit {
   stylePlayAgainBtn = this.inlineStyleStore.stylePlayAgainBtn;
   @Output() mapReady = new EventEmitter<Map>();
   tries: number = 1;
+  vectorSource = new Vector({});
 
   // Map views always need a projection.  Here we just want to map image
   // coordinates directly to map coordinates, so we create a projection that uses
@@ -73,8 +75,8 @@ export class OlMapComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.mapPoint = new Point(this.showedData.point);
-
+    //this.mapPoint = new Point(this.showedData.point);
+    this.vectorSource = this._olMapService.updateMap(this.showedData);
     if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap());
     }
@@ -101,9 +103,7 @@ export class OlMapComponent implements AfterViewInit {
           }),
         }),
         new VectorLayer({
-          source: new VectorSource({
-            features: [new Feature(this.mapPoint)],
-          }),
+          source: this.vectorSource,
           style: {
             'circle-radius': 9,
             'circle-fill-color': 'blue',
@@ -116,9 +116,13 @@ export class OlMapComponent implements AfterViewInit {
   onClick($event: any) {
     //Try  to render the map with the new Point
     //Not working ATM
+    this.tries = 1;
     this.showedData = this._olMapService.getRandomShowedAaccService();
-    this.mapPoint = new Point(this.showedData.point);
+    //this.mapPoint = new Point(this.showedData.point);
+    this.vectorSource = this.map._olMapService.updateMap(this.showedData);
+    this.initMap();
     this.map.render();
+    this.ngAfterViewInit();
     // Not needed for this game
     // let pixel: Pixel = [$event.x, $event.y];
     // const feature = this.map.getFeaturesAtPixel(pixel)[0] as Feature;
@@ -130,8 +134,8 @@ export class OlMapComponent implements AfterViewInit {
     // console.log(coordinate.getCoordinates(), feature);
   }
 
-  buttonClicked(){
-    this.tries ++;
+  buttonClicked() {
+    this.tries++;
   }
 
   onPointerMove($event: any) {
