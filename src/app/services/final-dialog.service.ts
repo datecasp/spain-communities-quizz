@@ -13,7 +13,7 @@ export class FinalDialogService {
     message: string,
     triesTxt: string,
     triesNum: number,
-    btnOkText: string = 'Play again!',
+    btnOkText: string = 'Close',
     dialogSize: 'sm' | 'lg' = 'lg'): Promise<boolean> {
     const modalRef = this.modalService.open(FinalDialogComponent, { size: dialogSize });
     modalRef.componentInstance.title = title;

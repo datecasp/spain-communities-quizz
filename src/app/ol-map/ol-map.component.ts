@@ -23,6 +23,7 @@ import Map from 'ol/Map';
 import { useGeographic } from 'ol/proj';
 import { OlMapService } from '../services/ol-map.service';
 import { IAacc } from '../interfaces/IAacc';
+import { InlineStyles } from '../Resources/inline-styles';
 useGeographic();
 
 @Component({
@@ -39,17 +40,17 @@ export class OlMapComponent implements AfterViewInit {
   feat: Feature | any;
   view: View | any;
   map: Map | any;
-
+  inlineStyleStore: InlineStyles = new InlineStyles;
+  playAgain = false;
   //Data and defs for column buttons
   data = this._olMapService.getDataService();
-  dataSourceLeft: IAacc[] = this.data.slice(
-    0,
-    this.data.length / 2 + 1
-  );
+  dataSourceLeft: IAacc[] = this.data.slice(0, this.data.length / 2 + 1);
   dataSourceRight: IAacc[] = this.data.slice(this.data.length / 2 + 1);
-  columnStyleLeft = 'position: absolute; left:220px; top:150px; zIndex: 10;';
-  columnStyleRight = 'position: absolute; right:120px; top:150px; zIndex: 10;';
+  columnStyleLeft = this.inlineStyleStore.columnStyleLeft;
+  columnStyleRight = this.inlineStyleStore.columnStyleRight;
+  stylePlayAgainBtn = this.inlineStyleStore.stylePlayAgainBtn;
   @Output() mapReady = new EventEmitter<Map>();
+  tries: number = 1;
 
   // Map views always need a projection.  Here we just want to map image
   // coordinates directly to map coordinates, so we create a projection that uses
@@ -65,11 +66,15 @@ export class OlMapComponent implements AfterViewInit {
   showedData: IAacc = this._olMapService.getRandomShowedAaccService();
   randomPointId: number = -1;
 
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef, private _olMapService: OlMapService) {}
+  constructor(
+    private zone: NgZone,
+    private cd: ChangeDetectorRef,
+    private _olMapService: OlMapService
+  ) {}
 
   ngAfterViewInit(): void {
     this.mapPoint = new Point(this.showedData.point);
-   
+
     if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap());
     }
@@ -77,7 +82,7 @@ export class OlMapComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-   this.view = new View({
+    this.view = new View({
       center: this.center,
       zoom: this.zoom,
       projection: this.projection,
@@ -109,6 +114,11 @@ export class OlMapComponent implements AfterViewInit {
   }
 
   onClick($event: any) {
+    //Try  to render the map with the new Point
+    //Not working ATM
+    this.showedData = this._olMapService.getRandomShowedAaccService();
+    this.mapPoint = new Point(this.showedData.point);
+    this.map.render();
     // Not needed for this game
     // let pixel: Pixel = [$event.x, $event.y];
     // const feature = this.map.getFeaturesAtPixel(pixel)[0] as Feature;
@@ -120,8 +130,12 @@ export class OlMapComponent implements AfterViewInit {
     // console.log(coordinate.getCoordinates(), feature);
   }
 
+  buttonClicked(){
+    this.tries ++;
+  }
+
   onPointerMove($event: any) {
-    //Not needed fot this game 
+    //Not needed fot this game
     // let pixel: Coordinate = [$event.x, $event.y];
     // const type = this.map.hasFeatureAtPixel(pixel) ? 'pointer' : 'inherit';
     // this.map.getViewport().style.cursor = type;

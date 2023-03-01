@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IAacc } from '../interfaces/IAacc';
 import { FinalDialogService } from '../services/final-dialog.service';
 import { OlMapService } from '../services/ol-map.service';
@@ -17,6 +17,9 @@ import { OlMapService } from '../services/ol-map.service';
 export class TableCustomComponent {
   @Input() data: IAacc[] = [];
   @Input() columnStyle: string = '';
+  @Input() tries: number = 1 //Number of tries used -> starts at first try
+  @Output() btnClicked = new EventEmitter();
+
   dataSource: IAacc[] = [];
   displayedColumns = ['name'];
   correctAnswer: boolean = false;
@@ -24,7 +27,6 @@ export class TableCustomComponent {
   correctColor = 'green';
   wrongColor = 'red';
   border: number = 0;
-  tries = 1; //Number of tries used -> starts at first try
 
   constructor(
     private _olMapService: OlMapService,
@@ -44,7 +46,7 @@ export class TableCustomComponent {
       element.point
     );
     if (!element.isCorrect) {
-      this.tries++;
+      this.btnClicked.emit();
     }
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
     if (element.isCorrect && element.isSelected) {
