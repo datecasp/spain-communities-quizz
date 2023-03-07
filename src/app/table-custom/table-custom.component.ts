@@ -34,11 +34,10 @@ export class TableCustomComponent {
   ) {}
 
   ngAfterViewInit() {
-    console.log(this.data[5].name);
     this.dataSource = this.data;
   }
 
-  onClick(element: IAacc) {
+  async onClick(element: IAacc) {
     //  To equals id and dataSource index if dataSource[0].id != 0
     //  dataA[0].id == 1   dataB[0] == 10 in spain-aacc-quizz
     let offsetId = this.dataSource[0].id;
@@ -50,13 +49,14 @@ export class TableCustomComponent {
     }
     this.dataSource[element.id - offsetId].isSelected = !element.isSelected;
     if (element.isCorrect && element.isSelected) {
-      this._finalDialogService.confirm(
+      // Wait for the resul of confirm() to reset color of button
+      element.isSelected = await this._finalDialogService.confirm(
         'Yeah Right!!! Nice answer!',
         'That´s the correct Community',
         'Number of tries:  ',
-        this.tries
+        this.tries,
+        element
       );
-      
     }
   }
 

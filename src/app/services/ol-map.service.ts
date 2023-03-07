@@ -3,7 +3,7 @@ import { Pixel } from 'ol/pixel';
 import { ELEMENT_DATA } from '../data/element-data';
 import { IAacc } from '../interfaces/IAacc';
 import Map from 'ol/Map';
-import VectorSource from 'ol/source/Vector';
+import Vector from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import { Point } from 'ol/geom';
 
@@ -29,13 +29,13 @@ export class OlMapService {
     return pixel == (this.showedData.point as Pixel);
   }
 
-  public updateMap(aacc: IAacc): VectorSource {
+  public updateMap(aacc: IAacc): Vector {
     let point = new Point(aacc.point);
     var featurething = new Feature({
       name: 'aaccPoint',
       geometry: point
     });
-    let vectorSource = new VectorSource();
+    let vectorSource = new Vector();
     vectorSource.addFeature(featurething);
     return vectorSource;
   }
