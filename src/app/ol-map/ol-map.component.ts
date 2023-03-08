@@ -121,11 +121,4 @@ export class OlMapComponent implements AfterViewInit {
   buttonClicked() {
     this.tries++;
   }
-
-  onPointerMove($event: any) {
-    //Not needed fot this game
-    // let pixel: Coordinate = [$event.x, $event.y];
-    // const type = this.map.hasFeatureAtPixel(pixel) ? 'pointer' : 'inherit';
-    // this.map.getViewport().style.cursor = type;
-  }
 }
