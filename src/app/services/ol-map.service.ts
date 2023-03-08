@@ -34,17 +34,34 @@ export class OlMapService {
   public addLayerToMap(): VectorSource<Point> {
     var showedData = this.getRandomShowedAaccService();
 
-  var point = new Point(showedData.point);
+    var point = new Point(showedData.point);
 
-  var featurePoint = new Feature({
-    name: 'aaccPoint',
-    geometry: point,
-  });
+    var featurePoint = new Feature({
+      name: 'aaccPoint',
+      geometry: point,
+    });
 
-  var source = new VectorSource({
-    features:[ new Feature(point)],
-  });
+    var source = new VectorSource({
+      features: [new Feature(point)],
+    });
 
     return source;
+  }
+
+  public addLayerToMapF(): Feature {
+    var showedData = this.getRandomShowedAaccService();
+
+    var point = new Point(showedData.point);
+
+    var featurePoint = new Feature({
+      name: 'aaccPoint',
+      geometry: point,
+    });
+
+    var source = new VectorSource({
+      features: [new Feature(point)],
+    });
+
+    return new Feature(point);
   }
 }
