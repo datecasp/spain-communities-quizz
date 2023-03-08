@@ -8,7 +8,8 @@ import { ELEMENT_DATA } from './data/element-data';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'spain-communities-quizz'; //Inputs app-ol-map and in-line style defs
+  title = 'spain-communities-quizz'; 
+  //Inputs app-ol-map and in-line style defs
   center: Coordinate = [200, 350];
   zoom: number = 1.2;
   mapStyle = 'width: 1200px; height: 700px;';
@@ -23,8 +24,4 @@ export class AppComponent {
   index = -1;
 
   constructor() {}
-
-  mapLoaded($event: any) {
-    console.log('Map loaded ' + $event.id);
-  }
 }

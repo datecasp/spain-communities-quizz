@@ -5,7 +5,7 @@
 <div
   class="map-container"
   id="map">
-<button [style]="stylePlayAgainBtn" (click)="onClick($event)">Play again</button>
+<button [style]="stylePlayAgainBtn" (click)="onClick()">Play again</button>
 <table-custom [data]="dataSourceLeft" [tries]="tries" [style]="columnStyleLeft" (btnClicked)="buttonClicked()"></table-custom>
 <table-custom [data]="dataSourceRight" [tries]="tries" [style]="columnStyleRight" (btnClicked)="buttonClicked()"></table-custom>
 </div>

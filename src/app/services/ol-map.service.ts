@@ -6,6 +6,8 @@ import Map from 'ol/Map';
 import Vector from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import { Point } from 'ol/geom';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 @Injectable({
   providedIn: 'root',
@@ -29,14 +31,20 @@ export class OlMapService {
     return pixel == (this.showedData.point as Pixel);
   }
 
-  public updateMap(aacc: IAacc): Vector {
-    let point = new Point(aacc.point);
-    var featurething = new Feature({
-      name: 'aaccPoint',
-      geometry: point
-    });
-    let vectorSource = new Vector();
-    vectorSource.addFeature(featurething);
-    return vectorSource;
+  public addLayerToMap(): VectorSource<Point> {
+    var showedData = this.getRandomShowedAaccService();
+
+  var point = new Point(showedData.point);
+
+  var featurePoint = new Feature({
+    name: 'aaccPoint',
+    geometry: point,
+  });
+
+  var source = new VectorSource({
+    features:[ new Feature(point)],
+  });
+
+    return source;
   }
 }

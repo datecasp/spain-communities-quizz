@@ -17,16 +17,13 @@ import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 import { Pixel } from 'ol/pixel';
 import { EduGamingControl } from '../controls/edu-gaming-control';
-import Feature from 'ol/Feature';
 import View from 'ol/View';
 import Map from 'ol/Map';
 import { useGeographic } from 'ol/proj';
 import { OlMapService } from '../services/ol-map.service';
 import { IAacc } from '../interfaces/IAacc';
 import { InlineStyles } from '../Resources/inline-styles';
-import Vector from 'ol/source/Vector';
-import Layer from 'ol/layer/Layer';
-import VectorImageLayer from 'ol/layer/VectorImage';
+
 useGeographic();
 
 @Component({
@@ -37,14 +34,12 @@ useGeographic();
 export class OlMapComponent implements AfterViewInit {
   @Input() center: Coordinate | any; // map center
   @Input() zoom: number | any; // initial zoom
-  points: Coordinate[] | any; // Point
-  mapPoint: Point | any;
-  mapCoord: Coordinate | any;
-  feat: Feature | any;
   view: View | any;
   map: Map | any;
+  layer: any;
   inlineStyleStore: InlineStyles = new InlineStyles();
-  playAgain = false;
+  tries: number = 1;
+
   //Data and defs for column buttons
   data = this._olMapService.getDataService();
   dataSourceLeft: IAacc[] = this.data.slice(0, this.data.length / 2 + 1);
@@ -52,10 +47,7 @@ export class OlMapComponent implements AfterViewInit {
   columnStyleLeft = this.inlineStyleStore.columnStyleLeft;
   columnStyleRight = this.inlineStyleStore.columnStyleRight;
   stylePlayAgainBtn = this.inlineStyleStore.stylePlayAgainBtn;
-  @Output() mapReady = new EventEmitter<Map>();
-  tries: number = 1;
-  vectorSource = new Vector({});
-  mapLayer: any;
+
   // Map views always need a projection.  Here we just want to map image
   // coordinates directly to map coordinates, so we create a projection that uses
   // the image extent in pixels.
@@ -66,23 +58,6 @@ export class OlMapComponent implements AfterViewInit {
     extent: this.extent,
   });
 
-  //Instance of the AACC showed in quizz
-  showedData: IAacc = this._olMapService.getRandomShowedAaccService();
-  randomPointId: number = -1;
-
-  point = new Point(this.showedData.point);
-
-  featurePoint = new Feature({
-    name: 'aaccPoint',
-    geometry: this.point,
-  });
-
-  source = new VectorSource({
-    features:[ new Feature(this.point)]
-  });
-
-  layer = new VectorLayer();
- 
   constructor(
     private zone: NgZone,
     private cd: ChangeDetectorRef,
@@ -90,16 +65,12 @@ export class OlMapComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    //this.mapPoint = new Point(this.showedData.point);
-    this.vectorSource = this._olMapService.updateMap(this.showedData);
     if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap());
     }
-    setTimeout(() => this.mapReady.emit(this.map));
   }
 
   private initMap(): void {
-    
     this.view = new View({
       center: this.center,
       zoom: this.zoom,
@@ -117,69 +88,23 @@ export class OlMapComponent implements AfterViewInit {
             imageExtent: this.extent,
           }),
         }),
-        new VectorLayer({
-          source: this.vectorSource,
-          style: {
-            'circle-radius': 9,
-            'circle-fill-color': 'blue',
-          },
-        })
-        // ,
-        // new VectorLayer({
-        //   source: new VectorSource({
-        //     features: [new Feature(new Point(this.showedData.point))],
-        //   }),
-        //   style: {
-        //     'circle-radius': 9,
-        //     'circle-fill-color': 'blue',
-        //   },
-        // }),
       ],
     });
+    this.layer = new VectorLayer({
+      source: this._olMapService.addLayerToMap(),
+      style: {'circle-fill-color': 'blue'}
+    });
+    
+    this.map.addLayer(this.layer);
   }
 
-  updateMap() {
-    this.map.layers = [];
-    this.map.layers = [
-      new ImageLayer({
-        source: new Static({
-          url: './assets/spain-aacc.png',
-          projection: this.projection,
-          imageExtent: this.extent,
-        }),
-      }),
-      new VectorLayer({
-        source: new VectorSource({
-          features: [new Feature(new Point(this.showedData.point))],
-        }),
-        style: {
-          'circle-radius': 9,
-          'circle-fill-color': 'blue',
-        },
-      }),
-    ];
-  }
-
-  onClick($event: any) {
-    //Try  to render the map with the new Point
-    //Not working ATM
+  onClick() {
     this.tries = 1;
-    this.showedData = this._olMapService.getRandomShowedAaccService();
-    //this.mapPoint = new Point(this.showedData.point);
-    //this.vectorSource = this._olMapService.updateMap(this.showedData);
-    //this.map.VectorLayer = null;
-    //this.updateMap();
-    //this.initMap();
-    //this.ngAfterViewInit();
-    // Not needed for this game
-    // let pixel: Pixel = [$event.x, $event.y];
-    // const feature = this.map.getFeaturesAtPixel(pixel)[0] as Feature;
-    // if (!feature) {
-    //   return;
-    // }
-    // console.log(feature.getId());
-    // const coordinate = feature.getGeometry() as Point;
-    // console.log(coordinate.getCoordinates(), feature);
+    this.map.removeLayer(this.layer);
+    this.layer = new VectorLayer({
+      source: this._olMapService.addLayerToMap(),
+    });
+    this.map.addLayer(this.layer);
   }
 
   buttonClicked() {
