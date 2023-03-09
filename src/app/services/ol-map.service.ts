@@ -5,7 +5,7 @@ import { IAacc } from '../interfaces/IAacc';
 import Map from 'ol/Map';
 import Vector from 'ol/source/Vector';
 import Feature from 'ol/Feature';
-import { Point } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
@@ -31,37 +31,18 @@ export class OlMapService {
     return pixel == (this.showedData.point as Pixel);
   }
 
-  public addLayerToMap(): VectorSource<Point> {
+  public createNewMapLayerService(): VectorLayer<VectorSource<Geometry>>{
     var showedData = this.getRandomShowedAaccService();
-
     var point = new Point(showedData.point);
 
-    var featurePoint = new Feature({
-      name: 'aaccPoint',
-      geometry: point,
-    });
-
-    var source = new VectorSource({
-      features: [new Feature(point)],
-    });
-
-    return source;
-  }
-
-  public addLayerToMapF(): Feature {
-    var showedData = this.getRandomShowedAaccService();
-
-    var point = new Point(showedData.point);
-
-    var featurePoint = new Feature({
-      name: 'aaccPoint',
-      geometry: point,
-    });
-
-    var source = new VectorSource({
-      features: [new Feature(point)],
-    });
-
-    return new Feature(point);
+    return new VectorLayer({
+      source: new VectorSource({
+        features: [new Feature(point)],
+      }),
+      style: {
+        'circle-radius': 9,
+        'circle-fill-color': 'blue',
+      },
+    })
   }
 }

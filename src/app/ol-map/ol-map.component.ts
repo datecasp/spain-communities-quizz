@@ -90,15 +90,7 @@ export class OlMapComponent implements AfterViewInit {
         }),
       ],
     });
-    this.layer = new VectorLayer({
-      source: new VectorSource({
-        features: [this._olMapService.addLayerToMapF()],
-      }),
-      style: {
-        'circle-radius': 9,
-        'circle-fill-color': 'blue',
-      },
-    });
+    this.layer = this._olMapService.createNewMapLayerService();
 
     this.map.addLayer(this.layer);
   }
@@ -106,15 +98,7 @@ export class OlMapComponent implements AfterViewInit {
   onClick() {
     this.tries = 1;
     this.map.removeLayer(this.layer);
-    this.layer = new VectorLayer({
-      source: new VectorSource({
-        features: [this._olMapService.addLayerToMapF()],
-      }),
-      style: {
-        'circle-radius': 9,
-        'circle-fill-color': 'blue',
-      },
-    });
+    this.layer = this._olMapService.createNewMapLayerService();
     this.map.addLayer(this.layer);
   }
 
